@@ -18,7 +18,4 @@ class HomeScreenViewController: UIViewController{
         self.title = "Main Screen"
     }
     
-  
-
-    
 }
