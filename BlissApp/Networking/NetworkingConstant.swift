@@ -8,6 +8,9 @@
 import UIKit
 
 class NetworkingConstant{
+    
+    public static var shared: NetworkingConstant = NetworkingConstant()
+    
     private init(){
         
     }
