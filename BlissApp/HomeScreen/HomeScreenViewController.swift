@@ -7,15 +7,28 @@
 
 import UIKit
 
-class HomeScreenViewController: UIViewController{
-    
+class HomeScreenViewController: UIViewController {
+
     private var homeView = HomeScreenView()
-    
-    override func viewDidLoad(){
-        super.viewDidLoad()
-        self.view = homeView
-        view.backgroundColor = .white
-        self.title = "Main Screen"
+    private var viewModel: HomeScreenViewModel
+
+    init(viewModel: HomeScreenViewModel = HomeScreenViewModel()) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
     }
-    
+
+    required init?(coder: NSCoder) {
+        self.viewModel = HomeScreenViewModel()
+        super.init(coder: coder)
+    }
+
+    override func loadView() {
+        self.view = homeView
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+        title = "Main Screen"
+    }
 }
