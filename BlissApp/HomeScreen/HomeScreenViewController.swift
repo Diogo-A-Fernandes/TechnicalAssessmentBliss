@@ -11,7 +11,7 @@ class HomeScreenViewController: UIViewController {
 
     private var homeView = HomeScreenView()
     private var viewModel: HomeScreenViewModel
-
+    
     init(viewModel: HomeScreenViewModel = HomeScreenViewModel()) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -30,5 +30,10 @@ class HomeScreenViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = "Main Screen"
+        homeView.randomEmojiButton.addTarget(self, action: #selector(randomEmojiButtonGotTapped), for: .touchUpInside)
+    }
+    
+    @objc func randomEmojiButtonGotTapped(_ sender: UIButton) {
+        print(viewModel.getRandomEmojiData())
     }
 }
