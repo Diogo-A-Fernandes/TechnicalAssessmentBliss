@@ -7,26 +7,49 @@
 
 import UIKit
 
-class HomeScreenViewModel{
+class HomeScreenViewModel {
     
+    private let context = PersistentStorage.shared.context
     
     func getRandomEmojiData(){
         APICaller.getEmojies { result in
-            switch result{
+            switch result {
             case .success(let data):
                 print(data)
+                //self.createEmoji(data: data)
+                //self.getOneEmojis()
             case .failure(let error):
                 print(error)
             }
         }
     }
     
-    func getOneEmoji(){
+    func getOneEmojis() {
         
+        do {
+            guard let result = try context.fetch(Emojis.fetchRequest()) as? [Emojis] else {
+                return
+            }
+            
+            result.forEach { print($0) }
+
+        } catch let error {
+            print(error)
+        }
     }
     
-    func createEmoji(name: String, image: String){
+    func createEmoji(data: [String: String]) {
         
+        for(key,value) in data {
+            let emoji = Emojis(context: context)
+            emoji.name = key
+            emoji.image = value
+        }
+        do {
+            try context.save()
+        } catch let error{
+            print("Failed to save emojis: \(error)")
+        }
     }
     
 }
