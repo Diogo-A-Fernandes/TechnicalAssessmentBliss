@@ -5,7 +5,10 @@
 //  Created by Diogo on 8/8/25.
 //
 
+import UIKit
+
 class HomeScreenViewModel{
+    
     
     func getRandomEmojiData(){
         APICaller.getEmojies { result in
@@ -17,4 +20,13 @@ class HomeScreenViewModel{
             }
         }
     }
+    
+    func getOneEmoji(){
+        
+    }
+    
+    func createEmoji(name: String, image: String){
+        
+    }
+    
 }
