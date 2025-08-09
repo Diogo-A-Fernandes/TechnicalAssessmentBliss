@@ -34,6 +34,20 @@ final class PersistentStorage {
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }
+    }    
+    func fetchManagedObject<T: NSManagedObject>(managedObject: T.Type) -> [T]? {
+        do {
+            guard let result = try context.fetch(managedObject.fetchRequest()) as?
+                    [T] else {return nil}
+            
+            return result
+            
+        } catch let error {
+            print(error)
+        }
+        
+        return nil
     }
 }
+
 
