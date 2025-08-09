@@ -14,6 +14,7 @@ protocol EmojisRepository {
     func getRandomEmoji() -> Emojis?
     func update(emoji: Emojis) -> Bool
     func delete(record: Emojis) -> Bool
+    func deleteAllEmojis()
 }
 
 struct EmojisDataRepository: EmojisRepository {
@@ -67,5 +68,18 @@ struct EmojisDataRepository: EmojisRepository {
         PersistentStorage.shared.saveContext()
         
         return true
+    }
+    
+    func deleteAllEmojis() {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Emojis")
+        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        do {
+            try PersistentStorage.shared.context.execute(batchDeleteRequest)
+            try PersistentStorage.shared.context.save()
+            print("Deleted all emojis from Core Data")
+        } catch {
+            print("Failed to delete all emojis: \(error)")
+        }
     }
 }

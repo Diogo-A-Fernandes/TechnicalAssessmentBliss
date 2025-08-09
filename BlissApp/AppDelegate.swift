@@ -20,6 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window.makeKeyAndVisible()
         
         self.window = window
+        
+        let emojiRepo = EmojisDataRepository()
+        emojiRepo.deleteAllEmojis()
+        
         return true
     }
     

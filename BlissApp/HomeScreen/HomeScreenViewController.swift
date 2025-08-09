@@ -34,6 +34,7 @@ class HomeScreenViewController: UIViewController {
     }
     
     @objc func randomEmojiButtonGotTapped(_ sender: UIButton) {
-        print(viewModel.getRandomEmojiData())
+        viewModel.getEmojisRecord { emojis in
+        }
     }
 }

@@ -9,47 +9,44 @@ import UIKit
 
 class HomeScreenViewModel {
     
-    private let context = PersistentStorage.shared.context
+    private let _emojiRepository : EmojisRepository = EmojisDataRepository()
     
-    func getRandomEmojiData(){
+    func getEmojisRecord(completionHandler: @escaping ([Emojis]) -> Void) {
+        if let savedEmojis = _emojiRepository.getAll(), !savedEmojis.isEmpty {
+            print("Found emojis in Core Data: \(savedEmojis.count)")
+            completionHandler(savedEmojis)
+        } else {
+            print("No emojis found in Core Data, fetching from API...")
+            getEmojiData { emojisFromAPI in
+                print("Retrieved \(emojisFromAPI.count) emojis from API and saved to Core Data")
+                completionHandler(emojisFromAPI)
+            }
+        }
+    }
+
+    func getEmojiData(completionHandler: @escaping ([Emojis]) -> Void) {
         APICaller.getEmojies { result in
             switch result {
             case .success(let data):
-                print(data)
-                //self.createEmoji(data: data)
-                //self.getOneEmojis()
+                print("API success, saving emojis to Core Data...")
+                data.forEach { (name, image) in
+                    let emoji = Emojis(context: PersistentStorage.shared.context)
+                    emoji.name = name
+                    emoji.image = image
+                    self._emojiRepository.create(emoji: emoji)
+                }
+                if let emojis = self._emojiRepository.getAll() {
+                    print("Emojis saved and fetched from Core Data: \(emojis.count)")
+                    completionHandler(emojis)
+                } else {
+                    print("Could not fetch emojis after saving")
+                    completionHandler([])
+                }
             case .failure(let error):
-                print(error)
+                print("API failed with error: \(error.localizedDescription)")
+                completionHandler([])
             }
         }
     }
-    
-    func getOneEmojis() {
-        
-        do {
-            guard let result = try context.fetch(Emojis.fetchRequest()) as? [Emojis] else {
-                return
-            }
-            
-            result.forEach { print($0) }
 
-        } catch let error {
-            print(error)
-        }
-    }
-    
-    func createEmoji(data: [String: String]) {
-        
-        for(key,value) in data {
-            let emoji = Emojis(context: context)
-            emoji.name = key
-            emoji.image = value
-        }
-        do {
-            try context.save()
-        } catch let error{
-            print("Failed to save emojis: \(error)")
-        }
-    }
-    
 }
