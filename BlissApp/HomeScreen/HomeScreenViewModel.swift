@@ -11,18 +11,18 @@ class HomeScreenViewModel {
     
     private let _emojiRepository : EmojisRepository = EmojisDataRepository()
     
-    func getEmojisRecord(completionHandler: @escaping ([Emojis]) -> Void) {
+    func getEmojisRecord(completionHandler: @escaping (Emojis?) -> Void) {
         if let savedEmojis = _emojiRepository.getAll(), !savedEmojis.isEmpty {
-            print("Found emojis in Core Data: \(savedEmojis.count)")
-            completionHandler(savedEmojis)
+            let randomEmoji = _emojiRepository.getRandomEmoji()
+            completionHandler(randomEmoji)
         } else {
-            print("No emojis found in Core Data, fetching from API...")
-            getEmojiData { emojisFromAPI in
-                print("Retrieved \(emojisFromAPI.count) emojis from API and saved to Core Data")
-                completionHandler(emojisFromAPI)
+            getEmojiData { _ in
+                let randomEmoji = self._emojiRepository.getRandomEmoji()
+                completionHandler(randomEmoji)
             }
         }
     }
+
 
     func getEmojiData(completionHandler: @escaping ([Emojis]) -> Void) {
         APICaller.getEmojies { result in

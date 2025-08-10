@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class HomeScreenViewController: UIViewController {
 
@@ -34,7 +35,19 @@ class HomeScreenViewController: UIViewController {
     }
     
     @objc func randomEmojiButtonGotTapped(_ sender: UIButton) {
-        viewModel.getEmojisRecord { emojis in
+        viewModel.getEmojisRecord { [weak self] emojis in
+            guard let self = self else { return }
+            guard let emoji = emojis, let imageUrlString = emoji.image, let imageUrl = URL(string: imageUrlString) else {
+                
+                DispatchQueue.main.async {
+                    self.homeView.randomEmojiImageView.image = UIImage(named: "placeholder")
+                }
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.homeView.randomEmojiImageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder"))
+            }
         }
     }
 }

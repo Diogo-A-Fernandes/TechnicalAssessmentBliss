@@ -30,7 +30,7 @@ class HomeScreenView: UIView {
     }
     
     private func configureSubviews() {
-        randomEmojiImageView.backgroundColor = .gray
+
         randomEmojiImageView.heightAnchor.constraint(equalToConstant: 200).isActive = true
         
         randomEmojiButton.backgroundColor = .gray
