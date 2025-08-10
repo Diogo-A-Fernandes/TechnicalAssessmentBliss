@@ -74,15 +74,16 @@ class HomeScreenView: UIView {
         addSubview(homeScreenStack)
         
         NSLayoutConstraint.activate([
-            homeScreenStack.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
-            homeScreenStack.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
-            homeScreenStack.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.8),
-            
-            randomEmojiImageView.bottomAnchor.constraint(equalTo: homeScreenStack.topAnchor, constant: -20),
+            randomEmojiImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
             randomEmojiImageView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
             randomEmojiImageView.widthAnchor.constraint(equalToConstant: 100),
-            randomEmojiImageView.heightAnchor.constraint(equalToConstant: 100)
+            randomEmojiImageView.heightAnchor.constraint(equalToConstant: 100),
+            
+            homeScreenStack.topAnchor.constraint(equalTo: randomEmojiImageView.bottomAnchor, constant: 20),
+            homeScreenStack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            homeScreenStack.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20),
         ])
+
 
     }
 }
