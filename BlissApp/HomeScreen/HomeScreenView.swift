@@ -30,8 +30,8 @@ class HomeScreenView: UIView {
     }
     
     private func configureSubviews() {
-
-        randomEmojiImageView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        
+        randomEmojiImageView.backgroundColor = .gray
         
         randomEmojiButton.backgroundColor = .gray
         randomEmojiButton.setTitle("Random Emoji", for: .normal)
@@ -58,7 +58,6 @@ class HomeScreenView: UIView {
         horizontalStack.spacing = 8
         
         let homeScreenStack = UIStackView(arrangedSubviews: [
-            randomEmojiImageView,
             randomEmojiButton,
             emojisListButton,
             horizontalStack,
@@ -68,13 +67,22 @@ class HomeScreenView: UIView {
         homeScreenStack.axis = .vertical
         homeScreenStack.spacing = 8
         homeScreenStack.translatesAutoresizingMaskIntoConstraints = false
-        
+       
+        randomEmojiImageView.translatesAutoresizingMaskIntoConstraints = false
+
+        addSubview(randomEmojiImageView)
         addSubview(homeScreenStack)
         
         NSLayoutConstraint.activate([
-            homeScreenStack.centerXAnchor.constraint(equalTo: centerXAnchor),
-            homeScreenStack.centerYAnchor.constraint(equalTo: centerYAnchor),
-            homeScreenStack.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.9)
+            homeScreenStack.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
+            homeScreenStack.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
+            homeScreenStack.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.8),
+            
+            randomEmojiImageView.bottomAnchor.constraint(equalTo: homeScreenStack.topAnchor, constant: -20),
+            randomEmojiImageView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
+            randomEmojiImageView.widthAnchor.constraint(equalToConstant: 100),
+            randomEmojiImageView.heightAnchor.constraint(equalToConstant: 100)
         ])
+
     }
 }
