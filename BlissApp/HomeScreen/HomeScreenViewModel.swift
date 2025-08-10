@@ -22,18 +22,16 @@ class HomeScreenViewModel {
             }
         }
     }
-
-
+    
+    
     func getEmojiData(completionHandler: @escaping ([Emojis]) -> Void) {
-        APICaller.getEmojies { result in
+        APICaller.getEmojies { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let data):
                 print("API success, saving emojis to Core Data...")
                 data.forEach { (name, image) in
-                    let emoji = Emojis(context: PersistentStorage.shared.context)
-                    emoji.name = name
-                    emoji.image = image
-                    self._emojiRepository.create(emoji: emoji)
+                    self._emojiRepository.create(name: name, image: image)
                 }
                 if let emojis = self._emojiRepository.getAll() {
                     print("Emojis saved and fetched from Core Data: \(emojis.count)")
@@ -48,5 +46,5 @@ class HomeScreenViewModel {
             }
         }
     }
-
+    
 }

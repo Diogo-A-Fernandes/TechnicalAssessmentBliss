@@ -8,7 +8,7 @@
 import CoreData
 
 protocol EmojisRepository {
-    func create(emoji: Emojis)
+    func create(name: String, image: String)
     func getAll() -> [Emojis]?
     func getEmoji(name: String) -> Emojis?
     func getRandomEmoji() -> Emojis?
@@ -19,10 +19,10 @@ protocol EmojisRepository {
 
 struct EmojisDataRepository: EmojisRepository {
     
-    func create(emoji: Emojis) {
+    func create(name: String, image: String) {
         let newEmoji = Emojis(context: PersistentStorage.shared.context)
-        newEmoji.name = emoji.name
-        newEmoji.image = emoji.image
+        newEmoji.name = name
+        newEmoji.image = image
         
         PersistentStorage.shared.saveContext()
     }
