@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		DD56C0842E4819F6009A122A /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = DD56C0832E4819F6009A122A /* SDWebImage */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		DD7E82B82E43AF110019403C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD56C0842E4819F6009A122A /* SDWebImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +130,7 @@
 			);
 			name = BlissApp;
 			packageProductDependencies = (
+				DD56C0832E4819F6009A122A /* SDWebImage */,
 			);
 			productName = BlissApp;
 			productReference = DD7E82A12E43AF100019403C /* BlissApp.app */;
@@ -208,6 +214,9 @@
 			);
 			mainGroup = DD7E82982E43AF100019403C;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				DD56C0822E4819F6009A122A /* XCRemoteSwiftPackageReference "SDWebImage" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = DD7E82A22E43AF100019403C /* Products */;
 			projectDirPath = "";
@@ -567,6 +576,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DD56C0822E4819F6009A122A /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.21.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DD56C0832E4819F6009A122A /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD56C0822E4819F6009A122A /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DD7E82992E43AF100019403C /* Project object */;
 }
