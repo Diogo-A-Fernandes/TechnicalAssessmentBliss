@@ -10,8 +10,9 @@ import SDWebImage
 
 class HomeScreenViewController: UIViewController {
 
-    private var homeView = HomeScreenView()
-    private var viewModel: HomeScreenViewModel
+    private let homeView = HomeScreenView()
+    private let viewModel: HomeScreenViewModel
+    private let emojisScreen = EmojisViewController()
     
     init(viewModel: HomeScreenViewModel = HomeScreenViewModel()) {
         self.viewModel = viewModel
@@ -33,6 +34,7 @@ class HomeScreenViewController: UIViewController {
         title = "Main Screen"
 
         homeView.randomEmojiButton.addTarget(self, action: #selector(randomEmojiButtonGotTapped), for: .touchUpInside)
+        homeView.emojisListButton.addTarget(self,action: #selector(emojiListButtonGotTapped), for: .touchUpInside)
     }
     
     @objc func randomEmojiButtonGotTapped(_ sender: UIButton) {
@@ -49,6 +51,12 @@ class HomeScreenViewController: UIViewController {
             DispatchQueue.main.async {
                 self.homeView.randomEmojiImageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder"))
             }
+        }
+    }
+    
+    @objc func emojiListButtonGotTapped(_ sender: UIButton) {
+        if let navigationController = self.navigationController {
+            navigationController.pushViewController(emojisScreen, animated: true)
         }
     }
 }
