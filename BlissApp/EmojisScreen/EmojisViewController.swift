@@ -31,9 +31,10 @@ class EmojisViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = "Emojis"
-        viewModel.getEmojisRecord { result in
-            print("I got here")
-        }
         setupCollectionView()
+
+        viewModel.getEmojisRecord { result in
+            self.reloadDataCollectionView()
+        }
     }
 }

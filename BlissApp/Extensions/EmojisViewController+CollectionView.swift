@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 extension EmojisViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -15,24 +16,35 @@ extension EmojisViewController: UICollectionViewDelegate, UICollectionViewDataSo
         registerCells()
     }
     
-    func registerCells(){
-        emojisView.emojisCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+    func registerCells() {
+        emojisView.emojisCollectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: EmojiCollectionViewCell.reuseIdentifier)
     }
-    
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.numberOfItems()
     }
-    
+        
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-      
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-        cell.backgroundColor = .systemBlue 
+       
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmojiCollectionViewCell.reuseIdentifier, for: indexPath) as? EmojiCollectionViewCell else {
+            fatalError("Could not dequeue EmojiCollectionViewCell")
+        }
+        
+        let emoji = viewModel.tempEmojisArray[indexPath.item]
+        
+        if let urlString = emoji.image, let url = URL(string: urlString) {
+            cell.imageView.sd_setImage(with: url)
+        } else {
+            cell.imageView.image = nil
+        }
         return cell
+    }
+
+    func reloadDataCollectionView() {
+        
+        DispatchQueue.main.async {
+            self.emojisView.emojisCollectionView.reloadData()
+        }
         
     }
-    
-    
-    
-    
 }
