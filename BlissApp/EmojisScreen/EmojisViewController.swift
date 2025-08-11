@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import SDWebImage
 
 class EmojisViewController: UIViewController {
     
-    private let viewModel : EmojisViewModel
-    private let emojisView = EmojisView()
+     let viewModel : EmojisViewModel
+     let emojisView = EmojisView()
     
     init(viewModel: EmojisViewModel = EmojisViewModel()) {
         self.viewModel = viewModel
@@ -29,7 +30,10 @@ class EmojisViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        title = "Emojis List"
-        emojisView.emojisTableView.backgroundColor = .red
+        title = "Emojis"
+        viewModel.getEmojisRecord { result in
+            print("I got here")
+        }
+        setupCollectionView()
     }
 }

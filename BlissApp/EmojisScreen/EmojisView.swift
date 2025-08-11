@@ -9,7 +9,17 @@ import UIKit
 
 class EmojisView: UIView {
     
-    let emojisTableView = UITableView()
+    var emojisCollectionView : UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.itemSize = CGSize(width: 80, height: 80) // tamanho das células
+        layout.minimumLineSpacing = 10  // espaçamento vertical
+        layout.minimumInteritemSpacing = 10 // espaçamento horizontal
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -22,15 +32,13 @@ class EmojisView: UIView {
     
     private func setUpLayout(){
         
-        emojisTableView.translatesAutoresizingMaskIntoConstraints = false
-        
-        addSubview(emojisTableView)
+        addSubview(emojisCollectionView)
         
         NSLayoutConstraint.activate([
-            emojisTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            emojisTableView.leftAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leftAnchor),
-            emojisTableView.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor),
-            emojisTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
+            emojisCollectionView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            emojisCollectionView.leftAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leftAnchor,constant: 10),
+            emojisCollectionView.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor,constant: -10),
+            emojisCollectionView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 }

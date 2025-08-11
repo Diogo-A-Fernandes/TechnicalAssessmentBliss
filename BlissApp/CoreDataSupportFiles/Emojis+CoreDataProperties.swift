@@ -2,7 +2,7 @@
 //  Emojis+CoreDataProperties.swift
 //  BlissApp
 //
-//  Created by user284528 on 8/9/25.
+//  Created by user284528 on 8/11/25.
 //
 //
 
@@ -16,8 +16,8 @@ extension Emojis {
         return NSFetchRequest<Emojis>(entityName: "Emojis")
     }
 
-    @NSManaged public var image: String?
     @NSManaged public var name: String?
+    @NSManaged public var image: String?
 
 }
 
