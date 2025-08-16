@@ -2,18 +2,39 @@
 //  EmojisViewController.swift
 //  BlissApp
 //
-//  Created by user284528 on 8/9/25.
+//  Created by Diogo on 8/9/25.
 //
 
 import UIKit
+import SDWebImage
 
 class EmojisViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    
+     let viewModel : EmojisViewModel
+     let emojisView = EmojisView()
+    
+    init(viewModel: EmojisViewModel = EmojisViewModel()) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
     }
     
+    required init?(coder: NSCoder) {
+        self.viewModel = EmojisViewModel()
+        super.init(coder: coder)
+    }
+    
+    override func loadView() {
+        self.view = emojisView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+        title = "Emojis"
+        setupCollectionView()
 
+        viewModel.getEmojisRecord { result in
+            self.reloadDataCollectionView()
+        }
+    }
 }

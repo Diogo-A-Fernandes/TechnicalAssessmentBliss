@@ -24,7 +24,11 @@ struct EmojisDataRepository: EmojisRepository {
         newEmoji.name = name
         newEmoji.image = image
         
-        PersistentStorage.shared.saveContext()
+        do {
+            try PersistentStorage.shared.context.save()
+        } catch {
+            print("Error saving emoji: \(error.localizedDescription) + \(newEmoji)")
+        }
     }
     
     func getAll() -> [Emojis]? {
