@@ -55,7 +55,10 @@ class EmojisViewModel {
         return tempEmojisArray.count
     }
     
-    func setupCell() {
-        
+    func fetchEmojisFromCoreData() -> [Emojis] {
+        let emojis = _emojiRepository.getAll() ?? []
+        tempEmojisArray = emojis
+        return emojis
     }
+
 }

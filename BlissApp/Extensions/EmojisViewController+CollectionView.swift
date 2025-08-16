@@ -40,6 +40,13 @@ extension EmojisViewController: UICollectionViewDelegate, UICollectionViewDataSo
         return cell
     }
 
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+            viewModel.tempEmojisArray.remove(at: indexPath.item)
+
+            collectionView.deleteItems(at: [indexPath])
+        }
+    
     func reloadDataCollectionView() {
         
         DispatchQueue.main.async {
