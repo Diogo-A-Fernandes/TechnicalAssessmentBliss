@@ -12,8 +12,10 @@ class EmojisViewModel {
     private let _emojiRepository : EmojisRepository = EmojisDataRepository()
     var tempEmojisArray : [Emojis] = []
     
-    func getEmojisRecord(completionHandler: @escaping ([Emojis]?) -> Void) {
-        if let savedEmojis = _emojiRepository.getAll(), !savedEmojis.isEmpty {
+    func getEmojisRecord(completionHandler: @escaping ([Emojis]) -> Void) {
+        let savedEmojis = _emojiRepository.getAll()
+        
+        if !savedEmojis.isEmpty {
             tempEmojisArray = savedEmojis
             completionHandler(tempEmojisArray)
         } else {
@@ -24,10 +26,10 @@ class EmojisViewModel {
         }
     }
     
-    
     func getEmojiData(completionHandler: @escaping ([Emojis]) -> Void) {
         APICaller.getEmojies { [weak self] result in
             guard let self = self else { return }
+            
             switch result {
             case .success(let data):
                 data.forEach { (name, image) in
@@ -37,12 +39,10 @@ class EmojisViewModel {
                     }
                     self._emojiRepository.create(name: name, image: image)
                 }
-
-                if let emojis = self._emojiRepository.getAll() {
-                    completionHandler(emojis)
-                } else {
-                    completionHandler([])
-                }
+                
+                let emojis = self._emojiRepository.getAll()
+                completionHandler(emojis)
+                
             case .failure(let error):
                 print("API failed with error: \(error.localizedDescription)")
                 completionHandler([])
@@ -50,15 +50,13 @@ class EmojisViewModel {
         }
     }
     
-    
     func numberOfItems() -> Int {
         return tempEmojisArray.count
     }
     
     func fetchEmojisFromCoreData() -> [Emojis] {
-        let emojis = _emojiRepository.getAll() ?? []
+        let emojis = _emojiRepository.getAll()
         tempEmojisArray = emojis
         return emojis
     }
-
 }
