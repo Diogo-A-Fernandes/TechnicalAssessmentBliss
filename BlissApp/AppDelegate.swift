@@ -24,6 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let emojiRepo = EmojisDataRepository()
         emojiRepo.deleteAllEmojis()
         
+        let avtRepo = AvatarsDataRepository()
+        avtRepo.deleteAllAvatars()
+        
         return true
     }
     
