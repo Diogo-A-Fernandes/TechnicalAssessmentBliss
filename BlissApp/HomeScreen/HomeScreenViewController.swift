@@ -77,7 +77,7 @@ class HomeScreenViewController: UIViewController {
             guard let self = self else { return }
             let placeholder = UIImage(named: "placeholder")
             
-            guard let urlString = avatar?.avatarURL, let imageUrl = URL(string: urlString) else {
+            guard let urlString = avatar?.image, let imageUrl = URL(string: urlString) else {
                 DispatchQueue.main.async {
                     self.homeView.randomEmojiImageView.image = placeholder
                 }
