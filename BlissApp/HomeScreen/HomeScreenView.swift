@@ -41,6 +41,7 @@ class HomeScreenView: UIView {
         
         searchBar.placeholder = "Search"
         searchBar.searchBarStyle = .minimal
+        searchBar.setImage(UIImage(), for: .search, state: .normal)
         
         searchButton.backgroundColor = .gray
         searchButton.setTitle("Search", for: .normal)
@@ -83,7 +84,12 @@ class HomeScreenView: UIView {
             homeScreenStack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
             homeScreenStack.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20),
         ])
+    }
+    
+    func setupSearchBarWarning(){
 
-
+        searchBar.layer.borderColor = CGColor(red: 1, green: 0, blue: 0, alpha: 1)
+        searchBar.layer.borderWidth = 1.5
+        searchBar.layer.cornerRadius = 8
     }
 }
