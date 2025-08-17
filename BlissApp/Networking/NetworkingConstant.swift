@@ -23,13 +23,13 @@ class NetworkingConstant{
     
     public var usersApi: String{
         get{
-            return "https://api.github.com/emojis"
+            return "https://api.github.com/users/"
         }
     }
     
     public var repositoriesApi: String{
         get{
-            return "https://api.github.com/emojis"
+            return "https://api.github.com/users/username/repos"
         }
     }
 }

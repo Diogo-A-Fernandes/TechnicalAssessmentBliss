@@ -34,5 +34,36 @@ public class APICaller{
             }
         }.resume()
     }
+    
+    static func getAvatar(username: String, completionHandler: @escaping(_ result: Result<AvatarsModel,NetworkError>) -> Void) {
+        
+        let urlString = NetworkingConstant.shared.usersApi + username
+        
+        guard let url = URL(string: urlString) else {
+            completionHandler(.failure(.urlError))
+            return
+        }
+        
+        print(url)
+        URLSession.shared.dataTask(with: url) { dataResponse, urlResponse, error in
+            
+            guard error == nil, let data = dataResponse else {
+                completionHandler(.failure(.canNotParseData))
+                return
+            }
+            
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            
+            do {
+                let result = try decoder.decode(AvatarsModel.self, from: data)
+                completionHandler(.success(result))
+            } catch {
+                print("Decoding error:", error)
+                completionHandler(.failure(.canNotParseData))
+            }
+            
+        }.resume()
+    }
 }
 
