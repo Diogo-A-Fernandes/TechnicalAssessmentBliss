@@ -10,9 +10,13 @@ import UIKit
 class HomeScreenViewModel {
     
     private let _emojiRepository : EmojisRepository = EmojisDataRepository()
+    private let _avatarsRepository : AvatarsRepository = AvatarsDataRepository()
+    var lastSearchText: String?
     
     func getEmojisRecord(completionHandler: @escaping (Emojis?) -> Void) {
-        if let savedEmojis = _emojiRepository.getAll(), !savedEmojis.isEmpty {
+        let emojis = _emojiRepository.getAll()
+        
+        if !emojis.isEmpty {
             let randomEmoji = _emojiRepository.getRandomEmoji()
             completionHandler(randomEmoji)
         } else {
@@ -22,6 +26,7 @@ class HomeScreenViewModel {
             }
         }
     }
+    
     
     func getEmojiData(completionHandler: @escaping ([Emojis]) -> Void) {
         APICaller.getEmojies { [weak self] result in
@@ -33,15 +38,10 @@ class HomeScreenViewModel {
                         print("Invalid emoji data skipped: \(name): \(image)")
                         return
                     }
-                    
                     self._emojiRepository.create(name: name, image: image)
                 }
-                if let emojis = self._emojiRepository.getAll() {
-                    completionHandler(emojis)
-                } else {
-                    print("Could not fetch emojis after saving")
-                    completionHandler([])
-                }
+                let emojis = self._emojiRepository.getAll()
+                completionHandler(emojis)
             case .failure(let error):
                 print("API failed with error: \(error.localizedDescription)")
                 completionHandler([])
@@ -49,4 +49,17 @@ class HomeScreenViewModel {
         }
     }
     
+    func getAvatarRecord(username: String, completionHandler: @escaping (AvatarsModel?) -> Void) {
+        APICaller.getAvatar(username: username) { [weak self] result in
+            guard self != nil else { return }
+            
+            switch result {
+            case .success(let avatar):
+                completionHandler(avatar)
+            case .failure(let error):
+                print("API failed with error: \(error.localizedDescription)")
+                completionHandler(nil)
+            }
+        }
+    }
 }
