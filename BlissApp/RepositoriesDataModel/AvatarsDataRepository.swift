@@ -8,7 +8,7 @@
 import CoreData
 
 protocol AvatarsRepository {
-    func create(username: String, image: String)
+    func create(username: String, image: String) -> Avatars
     func getAll() -> [Avatars]
     func getAvatar(username: String) -> Avatars?
     func delete(record: Avatars) -> Bool
@@ -21,10 +21,11 @@ struct AvatarsDataRepository: AvatarsRepository {
         return PersistentStorage.shared.context
     }
     
-    func create(username: String, image: String) {
-        context.perform {
-            let newAvatar = Avatars(context: context)
-            newAvatar.username = username
+    func create(username: String, image: String) -> Avatars {
+        var newAvatar: Avatars!
+        context.performAndWait {
+            newAvatar = Avatars(context: context)
+            newAvatar.username = username.lowercased()
             newAvatar.image = image
             
             do {
@@ -34,7 +35,9 @@ struct AvatarsDataRepository: AvatarsRepository {
                 print("Failed to save avatar: \(error.localizedDescription)")
             }
         }
+        return newAvatar
     }
+    
     
     func getAll() -> [Avatars] {
         var results: [Avatars] = []
@@ -48,7 +51,7 @@ struct AvatarsDataRepository: AvatarsRepository {
         var result: Avatars?
         context.performAndWait {
             let fetchRequest: NSFetchRequest<Avatars> = Avatars.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "username == %@", username)
+            fetchRequest.predicate = NSPredicate(format: "username == %@", username.lowercased())
             fetchRequest.fetchLimit = 1
             do {
                 result = try context.fetch(fetchRequest).first
@@ -89,3 +92,4 @@ struct AvatarsDataRepository: AvatarsRepository {
         }
     }
 }
+
