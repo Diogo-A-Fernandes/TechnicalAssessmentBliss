@@ -2,7 +2,7 @@
 //  Emojis+CoreDataClass.swift
 //  BlissApp
 //
-//  Created by user284528 on 8/11/25.
+//  Created by Diogo on 8/11/25.
 //
 //
 
