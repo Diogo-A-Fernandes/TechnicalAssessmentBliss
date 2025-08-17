@@ -29,6 +29,7 @@ class HomeScreenViewModel {
     
     
     func getEmojiData(completionHandler: @escaping ([Emojis]) -> Void) {
+      
         APICaller.getEmojies { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -49,17 +50,36 @@ class HomeScreenViewModel {
         }
     }
     
-    func getAvatarRecord(username: String, completionHandler: @escaping (AvatarsModel?) -> Void) {
+    func getAvatarRecord(username: String, completionHandler: @escaping (Avatars?) -> Void) {
+        
+        if let existingAvatar = _avatarsRepository.getAvatar(username: username
+        ) {
+            completionHandler(existingAvatar)
+            print("I was here")
+            return
+        }
+        
         APICaller.getAvatar(username: username) { [weak self] result in
-            guard self != nil else { return }
+            guard let self = self else { return }
             
             switch result {
-            case .success(let avatar):
+            case .success(let data):
+
+                guard let name = data.login, let avatarURL = data.avatarURL else {
+                    completionHandler(nil)
+                    return
+                }
+                
+                let avatar = self._avatarsRepository.create(username: name, image: avatarURL)
+                
+                print(self._avatarsRepository.getAll())
                 completionHandler(avatar)
+                
             case .failure(let error):
                 print("API failed with error: \(error.localizedDescription)")
                 completionHandler(nil)
             }
         }
     }
+    
 }
