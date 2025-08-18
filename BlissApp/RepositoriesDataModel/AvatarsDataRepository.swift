@@ -12,7 +12,7 @@ protocol AvatarsRepository {
     func getAll() -> [Avatars]
     func getAvatar(username: String) -> Avatars?
     func delete(record: Avatars) -> Bool
-    func deleteAllAvatars()
+    func deleteAll()
 }
 
 struct AvatarsDataRepository: AvatarsRepository {
@@ -77,7 +77,7 @@ struct AvatarsDataRepository: AvatarsRepository {
         return success
     }
     
-    func deleteAllAvatars() {
+    func deleteAll() {
         context.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Avatars")
             let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)

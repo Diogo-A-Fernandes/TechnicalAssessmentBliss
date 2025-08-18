@@ -10,7 +10,7 @@ import CoreData
 protocol AppleRepository {
     func create(name: String) -> AppleRepos
     func getAll() -> [AppleRepos]
-    func deleteAllAvatars()
+    func deleteAll()
 }
 
 struct AppleDataRepository: AppleRepository {
@@ -43,7 +43,7 @@ struct AppleDataRepository: AppleRepository {
         return results
     }
     
-    func deleteAllAvatars() {
+    func deleteAll() {
         context.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "AppleRepos")
             let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)

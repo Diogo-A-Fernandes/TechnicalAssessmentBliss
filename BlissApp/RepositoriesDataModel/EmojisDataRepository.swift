@@ -14,7 +14,7 @@ protocol EmojisRepository {
     func getRandomEmoji() -> Emojis?
     func update(emoji: Emojis) -> Bool
     func delete(record: Emojis) -> Bool
-    func deleteAllEmojis()
+    func deleteAll()
 }
 
 struct EmojisDataRepository: EmojisRepository {
@@ -95,7 +95,7 @@ struct EmojisDataRepository: EmojisRepository {
         return success
     }
     
-    func deleteAllEmojis() {
+    func deleteAll() {
         context.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Emojis")
             let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
