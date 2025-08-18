@@ -13,6 +13,7 @@ class HomeScreenViewController: UIViewController {
     let homeView = HomeScreenView()
     let viewModel: HomeScreenViewModel
     private let emojisScreen = EmojisViewController()
+    private let avatarsScreen = AvatarsViewController()
     
     init(viewModel: HomeScreenViewModel = HomeScreenViewModel()) {
         self.viewModel = viewModel
@@ -37,6 +38,7 @@ class HomeScreenViewController: UIViewController {
         homeView.randomEmojiButton.addTarget(self, action: #selector(randomEmojiButtonGotTapped), for: .touchUpInside)
         homeView.emojisListButton.addTarget(self,action: #selector(emojiListButtonGotTapped), for: .touchUpInside)
         homeView.searchButton.addTarget(self, action: #selector(searchButtonGotTapped), for: .touchUpInside)
+        homeView.avatarsListButton.addTarget(self, action: #selector(avatarsListButtonGotTapped), for: .touchUpInside)
     }
     
     @objc func randomEmojiButtonGotTapped(_ sender: UIButton) {
@@ -90,4 +92,10 @@ class HomeScreenViewController: UIViewController {
         }
     }
 
+    @objc func avatarsListButtonGotTapped(_ sender: UIButton) {
+        
+        if let navigationController = self.navigationController {
+            navigationController.pushViewController(avatarsScreen, animated: true)
+        }
+    }
 }
