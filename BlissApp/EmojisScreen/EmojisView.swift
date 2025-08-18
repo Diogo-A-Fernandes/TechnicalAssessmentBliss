@@ -9,17 +9,7 @@ import UIKit
 
 class EmojisView: UIView {
     
-    var emojisCollectionView : UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: 80, height: 80) // tamanho das células
-        layout.minimumLineSpacing = 10  // espaçamento vertical
-        layout.minimumInteritemSpacing = 10 // espaçamento horizontal
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        return collectionView
-    }()
+    var emojisCollectionView : GridCollectionView = GridCollectionView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)

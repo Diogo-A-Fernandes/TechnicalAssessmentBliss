@@ -33,22 +33,9 @@
 		DD7E82C12E43AF120019403C /* BlissAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlissAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		DD6A28192E53627F00BDD272 /* Exceptions for "BlissApp" folder in "BlissApp" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Application/Info.plist,
-			);
-			target = DD7E82A02E43AF100019403C /* BlissApp */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		DD7E82A32E43AF100019403C /* BlissApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				DD6A28192E53627F00BDD272 /* Exceptions for "BlissApp" folder in "BlissApp" target */,
-			);
 			path = BlissApp;
 			sourceTree = "<group>";
 		};
