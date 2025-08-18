@@ -65,5 +65,35 @@ public class APICaller{
             
         }.resume()
     }
+    
+    static func getAppleRepos(completionHandler: @escaping (_ result: Result<[RepositoriesModel], NetworkError>) -> Void) {
+        
+        let urlString = NetworkingConstant.shared.repositoriesApi + "page=1&per_page=10"
+        
+        guard let url = URL(string: urlString) else {
+            completionHandler(.failure(.urlError))
+            return
+        }
+        
+        print(url)
+        URLSession.shared.dataTask(with: url) { dataResponse, urlResponse, error in
+            
+            guard error == nil, let data = dataResponse else {
+                completionHandler(.failure(.canNotParseData))
+                return
+            }
+            
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            
+            do {
+                let result = try decoder.decode([RepositoriesModel].self, from: data)
+                completionHandler(.success(result))
+            } catch {
+                print("Decoding error:", error)
+                completionHandler(.failure(.canNotParseData))
+            }
+            
+        }.resume()
+    }
 }
-

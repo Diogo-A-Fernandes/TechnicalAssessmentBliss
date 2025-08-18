@@ -29,7 +29,7 @@ class NetworkingConstant{
     
     public var repositoriesApi: String{
         get{
-            return "https://api.github.com/users/username/repos"
+            return "https://api.github.com/users/apple/repos?"
         }
     }
 }
