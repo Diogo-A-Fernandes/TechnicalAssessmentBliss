@@ -22,10 +22,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = window
         
         let emojiRepo = EmojisDataRepository()
-        emojiRepo.deleteAllEmojis()
+        emojiRepo.deleteAll()
         
         let avtRepo = AvatarsDataRepository()
-        avtRepo.deleteAllAvatars()
+        avtRepo.deleteAll()
+        
+        let appleRepo = AppleDataRepository()
+        appleRepo.deleteAll()
         
         return true
     }
