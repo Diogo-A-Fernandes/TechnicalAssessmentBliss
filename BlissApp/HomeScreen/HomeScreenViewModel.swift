@@ -64,13 +64,8 @@ class HomeScreenViewModel {
             
             switch result {
             case .success(let data):
-
-                guard let name = data.login, let avatarURL = data.avatarURL else {
-                    completionHandler(nil)
-                    return
-                }
                 
-                let avatar = self._avatarsRepository.create(username: name, image: avatarURL)
+                let avatar = self._avatarsRepository.create(username: data.login, image: data.avatarURL)
                 
                 print(self._avatarsRepository.getAll())
                 completionHandler(avatar)
