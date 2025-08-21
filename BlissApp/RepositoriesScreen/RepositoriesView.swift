@@ -9,19 +9,36 @@ import UIKit
 
 class RepositoriesView: UIView {
     
-     let repositoriesTableView = UITableView()
+    let repositoriesTableView = UITableView()
+    let spinner = UIActivityIndicatorView(style: .medium)
+
+    private lazy var footerView: UIView = {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 50))
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.hidesWhenStopped = true
+        view.addSubview(spinner)
+        
+        NSLayoutConstraint.activate([
+            spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+        
+        return view
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUpLayout()
+        setUpSpinner()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        setUpLayout()
+        setUpSpinner()
     }
     
-    private func setUpLayout(){
-        
+    private func setUpLayout() {
         repositoriesTableView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(repositoriesTableView)
         
@@ -31,5 +48,17 @@ class RepositoriesView: UIView {
             repositoriesTableView.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor),
             repositoriesTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+    
+    private func setUpSpinner() {
+        repositoriesTableView.tableFooterView = footerView
+    }
+    
+    func showSpinner() {
+        spinner.startAnimating()
+    }
+    
+    func hideSpinner() {
+        spinner.stopAnimating()
     }
 }
