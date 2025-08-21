@@ -31,7 +31,9 @@ class HomeScreenView: UIView {
     
     private func configureSubviews() {
         
-        randomEmojiImageView.backgroundColor = .gray
+        randomEmojiImageView.image = UIImage(systemName: "person.fill")
+        randomEmojiImageView.contentMode = .scaleAspectFit
+        randomEmojiImageView.tintColor = .gray
         
         randomEmojiButton.backgroundColor = .gray
         randomEmojiButton.setTitle("Random Emoji", for: .normal)
