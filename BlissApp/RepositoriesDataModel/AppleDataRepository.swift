@@ -8,7 +8,7 @@
 import CoreData
 
 protocol AppleRepository {
-    func create(name: String) -> AppleRepos
+    func fetchDataAPIAndCreate(completionHandler: @escaping ([AppleRepos]) -> Void)
     func getAll() -> [AppleRepos]
     func deleteAll()
 }
@@ -19,43 +19,51 @@ struct AppleDataRepository: AppleRepository {
         return PersistentStorage.shared.context
     }
     
-    func create(name: String) -> AppleRepos {
-        var newAppleRepo: AppleRepos!
-        context.performAndWait {
-            newAppleRepo = AppleRepos(context: context)
-            newAppleRepo.name = name.lowercased()
-            
-            do {
-                try context.save()
-                print("Avatar saved: \(name)")
-            } catch {
-                print("Failed to save avatar: \(error.localizedDescription)")
+    func fetchDataAPIAndCreate(completionHandler: @escaping ([AppleRepos]) -> Void) {
+        APICaller.getAppleRepos { result in
+            switch result {
+            case .success(let data):
+                context.perform {
+                    for repo in data {
+                        guard !repo.name.isEmpty else { continue }
+                        if self.getRepo(name: repo.name) == nil {
+                            let newRepo = AppleRepos(context: context)
+                            newRepo.name = repo.name
+                        }
+                    }
+                    
+                    do {
+                        try context.save()
+                        completionHandler(self.getAll())
+                    } catch {
+                        print("Failed to save repos: \(error.localizedDescription)")
+                        completionHandler([])
+                    }
+                }
+                
+            case .failure(let error):
+                print("API failed with error: \(error.localizedDescription)")
+                completionHandler([])
             }
         }
-        return newAppleRepo
+    }
+    
+    private func getRepo(name: String) -> AppleRepos? {
+        let request: NSFetchRequest<AppleRepos> = AppleRepos.fetchRequest()
+        request.predicate = NSPredicate(format: "name == %@", name.lowercased())
+        return try? context.fetch(request).first
     }
     
     func getAll() -> [AppleRepos] {
-        var results: [AppleRepos] = []
-        context.performAndWait {
-            results = PersistentStorage.shared.fetchManagedObject(managedObject: AppleRepos.self) ?? []
-        }
-        return results
+        return PersistentStorage.shared.fetchManagedObject(managedObject: AppleRepos.self) ?? []
     }
     
     func deleteAll() {
         context.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "AppleRepos")
             let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-            
-            do {
-                try context.execute(batchDeleteRequest)
-                try context.save()
-                print("Deleted all avatars safely")
-            } catch {
-                print("Failed to delete all avatars: \(error)")
-            }
+            try? context.execute(batchDeleteRequest)
+            try? context.save()
         }
     }
 }
-

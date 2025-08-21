@@ -8,32 +8,45 @@
 import CoreData
 
 protocol EmojisRepository {
-    func create(name: String, image: String)
+    func fetchDataFromAPIAndCreate(completion: @escaping ([Emojis]) -> Void)
     func getAll() -> [Emojis]
-    func getEmoji(name: String) -> Emojis?
     func getRandomEmoji() -> Emojis?
-    func update(emoji: Emojis) -> Bool
-    func delete(record: Emojis) -> Bool
     func deleteAll()
 }
 
 struct EmojisDataRepository: EmojisRepository {
-    
+        
     private var context: NSManagedObjectContext {
         return PersistentStorage.shared.context
     }
     
-    func create(name: String, image: String) {
-        context.perform {
-            let newEmoji = Emojis(context: context)
-            newEmoji.name = name
-            newEmoji.image = image
-            
-            do {
-                try context.save()
-                print("Emoji saved: \(name)")
-            } catch {
-                print("Failed to save emoji: \(error.localizedDescription)")
+    func fetchDataFromAPIAndCreate(completion: @escaping ([Emojis]) -> Void) {
+        APICaller.getEmojies { result in
+            switch result {
+            case .success(let data):
+                context.perform {
+                    for (name, image) in data {
+                        guard !name.isEmpty, !image.isEmpty else { continue }
+                        if self.getEmoji(name: name) == nil {
+                            let newEmoji = Emojis(context: context)
+                            newEmoji.name = name
+                            newEmoji.image = image
+                            print(newEmoji)
+                        }
+                    }
+                    
+                    do {
+                        try context.save()
+                        let emojis = self.getAll()
+                        completion(emojis)
+                    } catch {
+                        print("Failed to save emojis: \(error.localizedDescription)")
+                        completion([])
+                    }
+                }
+            case .failure(let error):
+                print("API failed with error: \(error.localizedDescription)")
+                completion([])
             }
         }
     }
@@ -64,35 +77,6 @@ struct EmojisDataRepository: EmojisRepository {
     func getRandomEmoji() -> Emojis? {
         let emojis = getAll()
         return emojis.isEmpty ? nil : emojis.randomElement()
-    }
-    
-    func update(emoji: Emojis) -> Bool {
-        var success = false
-        context.performAndWait {
-            do {
-                try context.save()
-                success = true
-            } catch {
-                print("Failed to update emoji: \(error)")
-                success = false
-            }
-        }
-        return success
-    }
-    
-    func delete(record: Emojis) -> Bool {
-        var success = false
-        context.performAndWait {
-            context.delete(record)
-            do {
-                try context.save()
-                success = true
-            } catch {
-                print("Failed to delete emoji: \(error)")
-                success = false
-            }
-        }
-        return success
     }
     
     func deleteAll() {

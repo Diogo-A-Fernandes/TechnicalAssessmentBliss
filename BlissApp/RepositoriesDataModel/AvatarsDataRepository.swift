@@ -8,7 +8,7 @@
 import CoreData
 
 protocol AvatarsRepository {
-    func create(username: String, image: String) -> Avatars
+    func fetchDataAPIAndCreate(username: String, completionHandler: @escaping (Avatars?) -> Void)
     func getAll() -> [Avatars]
     func getAvatar(username: String) -> Avatars?
     func delete(record: Avatars) -> Bool
@@ -21,23 +21,38 @@ struct AvatarsDataRepository: AvatarsRepository {
         return PersistentStorage.shared.context
     }
     
-    func create(username: String, image: String) -> Avatars {
-        var newAvatar: Avatars!
-        context.performAndWait {
-            newAvatar = Avatars(context: context)
-            newAvatar.username = username.lowercased()
-            newAvatar.image = image
-            
-            do {
-                try context.save()
-                print("Avatar saved: \(username)")
-            } catch {
-                print("Failed to save avatar: \(error.localizedDescription)")
+    func fetchDataAPIAndCreate(username: String, completionHandler: @escaping (Avatars?) -> Void) {
+        APICaller.getAvatar(username: username) { result in
+
+            switch result {
+            case .success(let data):
+                self.context.perform {
+                    var avatar: Avatars? = nil
+                    if let existingAvatar = self.getAvatar(username: data.login) {
+                        avatar = existingAvatar
+                    } else {
+                        avatar = Avatars(context: self.context)
+                        avatar?.username = data.login.lowercased()
+                        avatar?.image = data.avatarURL
+                    }
+                    
+                    do {
+                        try self.context.save()
+                        print(self.getAll())
+                        completionHandler(avatar)
+                    } catch {
+                        print("Failed to save avatar: \(error.localizedDescription)")
+                        completionHandler(nil)
+                    }
+                }
+
+            case .failure(let error):
+                print("API failed with error: \(error.localizedDescription)")
+                completionHandler(nil)
             }
         }
-        return newAvatar
     }
-    
+
     
     func getAll() -> [Avatars] {
         var results: [Avatars] = []
