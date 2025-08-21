@@ -5,52 +5,44 @@
 //  Created by Diogo on 8/18/25.
 //
 
-import UIKit
-
 class RepositoriesViewModel {
     
     private let _appleRepository : AppleRepository = AppleDataRepository()
     var tempReposArray : [AppleRepos] = []
+    
+    private var hasMorePages = true
+    var isLoading = Observable(false)
 
     func getRepositoriesRecord(completionHandler: @escaping ([AppleRepos]) -> Void) {
-       
-        let savedRepos  = _appleRepository.getAll()
+        let savedRepos = _appleRepository.getAll()
         
-        if !savedRepos .isEmpty {
-            tempReposArray = savedRepos 
+        if !savedRepos.isEmpty {
+            tempReposArray = savedRepos
             completionHandler(tempReposArray)
         } else {
-            getReposData { result in
-                self.tempReposArray = result
-                completionHandler(self.tempReposArray)
-            }
+            loadMore(completionHandler: completionHandler)
         }
     }
     
-    func getReposData(completionHandler: @escaping ([AppleRepos]) -> Void) {
+    func loadMore(completionHandler: @escaping ([AppleRepos]) -> Void) {
+        guard !isLoading.value!, hasMorePages else { return }
         
-        APICaller.getAppleRepos { [weak self] result in
+        isLoading.value = true
+        _appleRepository.fetchDataAPIAndCreate { [weak self] result in
             guard let self = self else { return }
             
-            switch result {
-            case .success(let data):
-               
-                for repo in data {
-                    self._appleRepository.create(name: repo.name)
-                }
-                
-                let repos = self._appleRepository.getAll()
-                completionHandler(repos)
-                
-            case .failure(let error):
-                print("API failed with error: \(error.localizedDescription)")
-                completionHandler([])
+            if result.isEmpty {
+                self.hasMorePages = false
+            } else {
+                self.tempReposArray = result
             }
+            
+            self.isLoading.value = false
+            completionHandler(self.tempReposArray)
         }
     }
     
     func numberOfItems() -> Int {
         return tempReposArray.count
     }
-    
 }
