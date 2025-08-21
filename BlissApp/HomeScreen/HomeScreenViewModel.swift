@@ -18,34 +18,12 @@ class HomeScreenViewModel {
         
         if !emojis.isEmpty {
             let randomEmoji = _emojiRepository.getRandomEmoji()
-            completionHandler(randomEmoji)
-        } else {
-            getEmojiData { _ in
-                let randomEmoji = self._emojiRepository.getRandomEmoji()
                 completionHandler(randomEmoji)
-            }
-        }
-    }
-    
-    
-    func getEmojiData(completionHandler: @escaping ([Emojis]) -> Void) {
-      
-        APICaller.getEmojies { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let data):
-                data.forEach { (name, image) in
-                    guard !name.isEmpty, !image.isEmpty else {
-                        print("Invalid emoji data skipped: \(name): \(image)")
-                        return
-                    }
-                    self._emojiRepository.create(name: name, image: image)
-                }
-                let emojis = self._emojiRepository.getAll()
-                completionHandler(emojis)
-            case .failure(let error):
-                print("API failed with error: \(error.localizedDescription)")
-                completionHandler([])
+            
+        } else {
+            _emojiRepository.fetchDataFromAPIAndCreate { _ in
+                let randomEmoji = self._emojiRepository.getRandomEmoji()
+                    completionHandler(randomEmoji)
             }
         }
     }
@@ -55,26 +33,13 @@ class HomeScreenViewModel {
         if let existingAvatar = _avatarsRepository.getAvatar(username: username
         ) {
             completionHandler(existingAvatar)
-            print("I was here")
             return
-        }
-        
-        APICaller.getAvatar(username: username) { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let data):
-                
-                let avatar = self._avatarsRepository.create(username: data.login, image: data.avatarURL)
-                
-                print(self._avatarsRepository.getAll())
-                completionHandler(avatar)
-                
-            case .failure(let error):
-                print("API failed with error: \(error.localizedDescription)")
-                completionHandler(nil)
+        } else {
+            _avatarsRepository.fetchDataAPIAndCreate(username: username) { result in
+                completionHandler(result)
             }
         }
+        
     }
     
 }
