@@ -45,22 +45,16 @@ class HomeScreenViewController: UIViewController {
     
     @objc func randomEmojiButtonGotTapped(_ sender: UIButton) {
         viewModel.getEmojisRecord { [weak self] emojis in
-           
             guard let self = self else { return }
             
-            guard let emoji = emojis, let imageUrlString = emoji.image, let imageUrl = URL(string: imageUrlString) else {
-                
+            if let emoji = emojis, let imageUrlString = emoji.image, let imageUrl = URL(string: imageUrlString) {
                 DispatchQueue.main.async {
-                    self.homeView.randomEmojiImageView.image = UIImage(named: "placeholder")
+                    self.homeView.randomEmojiImageView.sd_setImage(with: imageUrl)
                 }
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self.homeView.randomEmojiImageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder"))
             }
         }
     }
+
     
     @objc func emojiListButtonGotTapped(_ sender: UIButton) {
         
@@ -79,17 +73,18 @@ class HomeScreenViewController: UIViewController {
         viewModel.getAvatarRecord(username: text) { [weak self] avatar in
             
             guard let self = self else { return }
-            let placeholder = UIImage(named: "placeholder")
             
             guard let urlString = avatar?.image, let imageUrl = URL(string: urlString) else {
                 DispatchQueue.main.async {
-                    self.homeView.randomEmojiImageView.image = placeholder
+                    self.homeView.randomEmojiImageView.image = UIImage(systemName: "person.fill")
+                    self.homeView.randomEmojiImageView.tintColor = .gray
+                    self.homeView.randomEmojiImageView.contentMode = .scaleAspectFit
                 }
                 return
             }
             
             DispatchQueue.main.async {
-                self.homeView.randomEmojiImageView.sd_setImage(with: imageUrl, placeholderImage: placeholder)
+                self.homeView.randomEmojiImageView.sd_setImage(with: imageUrl)
             }
         }
     }
