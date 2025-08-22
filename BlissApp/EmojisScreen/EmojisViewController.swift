@@ -38,12 +38,12 @@ class EmojisViewController: UIViewController {
         }
         
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget		(self, action: #selector(refreshEmojis), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(refreshEmojis), for: .valueChanged)
         emojisView.emojisCollectionView.refreshControl = refreshControl
     }
     
     @objc func refreshEmojis() {
-        viewModel.tempEmojisArray = viewModel.fetchEmojisFromCoreData()
+        viewModel.tempEmojisArray = viewModel.refreshTempArrayData()
         emojisView.emojisCollectionView.reloadData()
         emojisView.emojisCollectionView.refreshControl?.endRefreshing()
         }
