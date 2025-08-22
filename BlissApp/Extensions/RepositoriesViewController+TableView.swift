@@ -24,23 +24,42 @@ extension RepositoriesViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: TextTableViewCell.reuseIdentifier, for: indexPath) as? TextTableViewCell else {
-                return UITableViewCell()
-            }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TextTableViewCell.reuseIdentifier, for: indexPath) as? TextTableViewCell else {
+            return UITableViewCell()
+        }
 
         let repo = viewModel.tempReposArray[indexPath.row]
-
-        if let name = repo.name {
-            cell.configure(text: name)
-        } else {
-            cell.configure(text: "Unnamed repo")
-        }
+        cell.configure(text: repo.name ?? "Unnamed repo")
         
-            return cell
+        return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 80
     }
-
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+           if indexPath.row == viewModel.tempReposArray.count - 1 {
+               viewModel.loadMore { [weak self] _ in
+                   DispatchQueue.main.async {
+                       self?.repositoriesView.repositoriesTableView.reloadData()
+                   }
+               }
+           }
+       }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let frameHeight = scrollView.frame.size.height
+        
+        if offsetY > contentHeight - frameHeight - 100 {
+            viewModel.getRepositoriesRecord { [weak self] _ in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.repositoriesView.repositoriesTableView.reloadData()
+                }
+            }
+        }
+    }
 }
