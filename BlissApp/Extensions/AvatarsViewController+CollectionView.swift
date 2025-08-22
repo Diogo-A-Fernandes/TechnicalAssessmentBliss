@@ -44,7 +44,12 @@ extension AvatarsViewController: UICollectionViewDelegate, UICollectionViewDataS
 
         if let urlString = avatar.image, let url = URL(string: urlString) {
             cell.configure(url: url)
+        } else {
+            cell.imageView.image = UIImage(systemName: "person.fill")
+            cell.imageView.contentMode = .scaleAspectFit
+            cell.imageView.tintColor = .gray
         }
+        
         return cell
     }
 
