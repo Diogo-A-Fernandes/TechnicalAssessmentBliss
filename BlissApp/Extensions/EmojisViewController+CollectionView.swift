@@ -21,7 +21,15 @@ extension EmojisViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.numberOfItems()
+        let count = viewModel.tempEmojisArray.count
+        
+        if count == 0 {
+            collectionView.setEmptyMessage("No emojis avaliable at the moment.")
+        } else {
+            collectionView.restore()
+        }
+        
+        return count
     }
         
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -33,9 +41,11 @@ extension EmojisViewController: UICollectionViewDelegate, UICollectionViewDataSo
         let emoji = viewModel.tempEmojisArray[indexPath.item]
         
         if let urlString = emoji.image, let url = URL(string: urlString) {
-            cell.imageView.sd_setImage(with: url)
+            cell.configure(url: url)
         } else {
-            cell.imageView.image = nil
+            cell.imageView.image = UIImage(systemName: "person.fill")
+            cell.imageView.contentMode = .scaleAspectFit
+            cell.imageView.tintColor = .gray
         }
         return cell
     }
