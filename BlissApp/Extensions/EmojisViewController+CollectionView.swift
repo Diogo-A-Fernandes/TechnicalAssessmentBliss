@@ -23,14 +23,26 @@ extension EmojisViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let count = viewModel.tempEmojisArray.count
         
-        if count == 0 {
-            collectionView.setEmptyMessage("No emojis avaliable at the moment.")
-        } else {
-            collectionView.restore()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            if count == 0 {
+                if self.viewModel.isLoading.value ?? false {
+                    self.emojisView.showSpinner()
+                    collectionView.restore()
+                } else {
+                    self.emojisView.hideSpinner()
+                    collectionView.setEmptyMessage("No emojis available at the moment.")
+                }
+            } else {
+                self.emojisView.hideSpinner()
+                collectionView.restore()
+            }
         }
         
         return count
     }
+
         
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
        

@@ -11,16 +11,23 @@ class EmojisViewModel {
     
     private let _emojiRepository : EmojisRepository = EmojisDataRepository()
     var tempEmojisArray : [Emojis] = []
+    var isLoading = Observable(false)
+
     
     func getEmojisRecord(completionHandler: @escaping ([Emojis]) -> Void) {
+        
+        isLoading.value = true
+        
         let savedEmojis = _emojiRepository.getAll()
         
         if !savedEmojis.isEmpty {
             tempEmojisArray = savedEmojis
+            isLoading.value = false
             completionHandler(tempEmojisArray)
         } else {
             _emojiRepository.fetchDataFromAPIAndCreate { result in
                  self.tempEmojisArray = result
+                 self.isLoading.value = false
                 completionHandler(self.tempEmojisArray)
             }
         }

@@ -44,7 +44,7 @@ class RepositoriesViewController: UIViewController {
     private func bindLoading() {
         viewModel.isLoading.bind { [weak self] loading in
             guard let self = self else { return }
-            if loading == true {
+            if loading ?? false {
                 self.repositoriesView.showSpinner()
             } else {
                 self.repositoriesView.hideSpinner()

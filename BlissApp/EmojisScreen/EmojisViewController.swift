@@ -48,5 +48,15 @@ class EmojisViewController: UIViewController {
         emojisView.emojisCollectionView.refreshControl?.endRefreshing()
         }
     
+    private func bindLoading() {
+        viewModel.isLoading.bind { [weak self] loading in
+            guard let self = self else { return }
+            if loading ?? false {
+                self.emojisView.showSpinner()
+            } else {
+                self.emojisView.hideSpinner()
+            }
+        }
+    }
 }
 		

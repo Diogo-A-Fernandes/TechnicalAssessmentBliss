@@ -35,6 +35,8 @@ class HomeScreenViewController: UIViewController {
         view.backgroundColor = .systemBackground
         title = "Home Screen"
         setupSearchBar()
+        bindLoading()
+        bindWarning()
 
         homeView.randomEmojiButton.addTarget(self, action: #selector(randomEmojiButtonGotTapped), for: .touchUpInside)
         homeView.emojisListButton.addTarget(self,action: #selector(emojiListButtonGotTapped), for: .touchUpInside)
@@ -100,6 +102,32 @@ class HomeScreenViewController: UIViewController {
         
         if let navigationController = self.navigationController {
             navigationController.pushViewController(reposScreen, animated: true)
+        }
+    }
+    
+    private func bindLoading() {
+        viewModel.isLoading.bind { [weak self] loading in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                if loading ?? false {
+                    self.homeView.showSpinner()
+                } else {
+                    self.homeView.hideSpinner()
+                }
+            }
+        }
+    }
+    
+    private func bindWarning() {
+        viewModel.warningMessage.bind { [weak self] message in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                if let stringMessage = message {
+                    self.homeView.showWarningLabel(stringMessage!)
+                } else {
+                    self.homeView.hideWarningLabel()
+                }
+            }
         }
     }
 }

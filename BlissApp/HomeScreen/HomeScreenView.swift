@@ -16,7 +16,10 @@ class HomeScreenView: UIView {
     let searchButton = UIButton()
     let avatarsListButton = UIButton()
     let repositoriesButton = UIButton()
+    let spinner = UIActivityIndicatorView(style: .large)
+    let warningLabel = UILabel()
 
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureSubviews()
@@ -30,6 +33,15 @@ class HomeScreenView: UIView {
     }
     
     private func configureSubviews() {
+        
+        spinner.hidesWhenStopped = true
+        spinner.color = .gray
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        
+        warningLabel.textColor = .red
+        warningLabel.font = UIFont.systemFont(ofSize: 14)
+        warningLabel.textAlignment = .center
+        warningLabel.isHidden = true
         
         randomEmojiImageView.image = UIImage(systemName: "person.fill")
         randomEmojiImageView.contentMode = .scaleAspectFit
@@ -64,6 +76,7 @@ class HomeScreenView: UIView {
             randomEmojiButton,
             emojisListButton,
             horizontalStack,
+            warningLabel,
             avatarsListButton,
             repositoriesButton
         ])
@@ -75,16 +88,20 @@ class HomeScreenView: UIView {
 
         addSubview(randomEmojiImageView)
         addSubview(homeScreenStack)
+        addSubview(spinner)
         
         NSLayoutConstraint.activate([
-            randomEmojiImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
+            randomEmojiImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 5),
             randomEmojiImageView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
             randomEmojiImageView.widthAnchor.constraint(equalToConstant: 100),
             randomEmojiImageView.heightAnchor.constraint(equalToConstant: 100),
             
-            homeScreenStack.topAnchor.constraint(equalTo: randomEmojiImageView.bottomAnchor, constant: 20),
+            homeScreenStack.topAnchor.constraint(equalTo: randomEmojiImageView.bottomAnchor, constant: 5),
             homeScreenStack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
             homeScreenStack.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            
+            spinner.centerXAnchor.constraint(equalTo: randomEmojiImageView.centerXAnchor),
+            spinner.centerYAnchor.constraint(equalTo: randomEmojiImageView.centerYAnchor)
         ])
     }
     
@@ -94,4 +111,22 @@ class HomeScreenView: UIView {
         searchBar.layer.borderWidth = 1.5
         searchBar.layer.cornerRadius = 8
     }
+    
+    func showSpinner() {
+        spinner.startAnimating()
+    }
+    
+    func hideSpinner() {
+        spinner.stopAnimating()
+    }
+    
+    func showWarningLabel(_ text: String) {
+        warningLabel.text = text
+        warningLabel.isHidden = false
+    }
+
+    func hideWarningLabel() {
+        warningLabel.isHidden = true
+    }
+
 }
