@@ -8,9 +8,9 @@
 import UIKit
 
 class TextTableViewCell: UITableViewCell {
-
+    
     static let reuseIdentifier = "TextTableViewCell"
-
+    
     private let label: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -19,20 +19,20 @@ class TextTableViewCell: UITableViewCell {
         label.textColor = .label
         return label
     }()
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
     }
-
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupUI()
     }
-
+    
     private func setupUI() {
         contentView.addSubview(label)
-
+        
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
@@ -40,7 +40,7 @@ class TextTableViewCell: UITableViewCell {
             label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
         ])
     }
-
+    
     func configure(text: String) {
         label.text = text
     }

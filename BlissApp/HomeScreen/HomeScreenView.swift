@@ -18,7 +18,7 @@ class HomeScreenView: UIView {
     let repositoriesButton = UIButton()
     let spinner = UIActivityIndicatorView(style: .large)
     let warningLabel = UILabel()
-
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -83,9 +83,9 @@ class HomeScreenView: UIView {
         homeScreenStack.axis = .vertical
         homeScreenStack.spacing = 8
         homeScreenStack.translatesAutoresizingMaskIntoConstraints = false
-       
+        
         randomEmojiImageView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         addSubview(randomEmojiImageView)
         addSubview(homeScreenStack)
         addSubview(spinner)
@@ -106,7 +106,7 @@ class HomeScreenView: UIView {
     }
     
     func setupSearchBarWarning(){
-
+        
         searchBar.layer.borderColor = CGColor(red: 1, green: 0, blue: 0, alpha: 1)
         searchBar.layer.borderWidth = 1.5
         searchBar.layer.cornerRadius = 8
@@ -124,9 +124,9 @@ class HomeScreenView: UIView {
         warningLabel.text = text
         warningLabel.isHidden = false
     }
-
+    
     func hideWarningLabel() {
         warningLabel.isHidden = true
     }
-
+    
 }

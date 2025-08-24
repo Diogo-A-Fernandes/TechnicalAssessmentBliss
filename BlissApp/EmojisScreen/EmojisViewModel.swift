@@ -12,7 +12,7 @@ class EmojisViewModel {
     private let _emojiRepository : EmojisRepository = EmojisDataRepository()
     var tempEmojisArray : [Emojis] = []
     var isLoading = Observable(false)
-
+    
     
     func getEmojisRecord(completionHandler: @escaping ([Emojis]) -> Void) {
         
@@ -26,13 +26,13 @@ class EmojisViewModel {
             completionHandler(tempEmojisArray)
         } else {
             _emojiRepository.fetchDataFromAPIAndCreate { result in
-                 self.tempEmojisArray = result
-                 self.isLoading.value = false
+                self.tempEmojisArray = result
+                self.isLoading.value = false
                 completionHandler(self.tempEmojisArray)
             }
         }
     }
-
+    
     func numberOfItems() -> Int {
         return tempEmojisArray.count
     }

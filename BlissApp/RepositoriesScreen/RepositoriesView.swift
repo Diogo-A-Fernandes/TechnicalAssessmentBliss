@@ -11,7 +11,7 @@ class RepositoriesView: UIView {
     
     let repositoriesTableView = UITableView()
     let spinner = UIActivityIndicatorView(style: .medium)
-
+    
     private lazy var footerView: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 50))
         spinner.translatesAutoresizingMaskIntoConstraints = false

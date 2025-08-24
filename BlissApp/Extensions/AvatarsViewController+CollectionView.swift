@@ -19,7 +19,7 @@ extension AvatarsViewController: UICollectionViewDelegate, UICollectionViewDataS
     func registerCells() {
         avatarsView.avatarsCollectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: ImageCollectionViewCell.reuseIdentifier)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let count = viewModel.numberOfItems()
         
@@ -31,17 +31,17 @@ extension AvatarsViewController: UICollectionViewDelegate, UICollectionViewDataS
         
         return count
     }
-
-        
+    
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-       
+        
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.reuseIdentifier, for: indexPath) as? ImageCollectionViewCell else {
             fatalError("Could not dequeue ImageCollectionViewCell")
         }
         
         let avatars = viewModel.getAvatars()
         let avatar = avatars[indexPath.row]
-
+        
         if let urlString = avatar.image, let url = URL(string: urlString) {
             cell.configure(url: url)
         } else {
@@ -52,7 +52,7 @@ extension AvatarsViewController: UICollectionViewDelegate, UICollectionViewDataS
         
         return cell
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let avatars = viewModel.getAvatars()

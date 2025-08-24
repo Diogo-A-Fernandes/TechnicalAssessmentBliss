@@ -9,7 +9,7 @@ import UIKit
 import SDWebImage
 
 class HomeScreenViewController: UIViewController {
-
+    
     let homeView = HomeScreenView()
     let viewModel: HomeScreenViewModel
     private let emojisScreen = EmojisViewController()
@@ -20,16 +20,16 @@ class HomeScreenViewController: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
-
+    
     required init?(coder: NSCoder) {
         self.viewModel = HomeScreenViewModel()
         super.init(coder: coder)
     }
-
+    
     override func loadView() {
         self.view = homeView
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -37,7 +37,7 @@ class HomeScreenViewController: UIViewController {
         setupSearchBar()
         bindLoading()
         bindWarning()
-
+        
         homeView.randomEmojiButton.addTarget(self, action: #selector(randomEmojiButtonGotTapped), for: .touchUpInside)
         homeView.emojisListButton.addTarget(self,action: #selector(emojiListButtonGotTapped), for: .touchUpInside)
         homeView.searchButton.addTarget(self, action: #selector(searchButtonGotTapped), for: .touchUpInside)
@@ -56,7 +56,7 @@ class HomeScreenViewController: UIViewController {
             }
         }
     }
-
+    
     
     @objc func emojiListButtonGotTapped(_ sender: UIButton) {
         
@@ -66,7 +66,7 @@ class HomeScreenViewController: UIViewController {
     }
     
     @objc func searchButtonGotTapped(_ sender: UIButton) {
-       
+        
         guard let text = viewModel.lastSearchText, !text.isEmpty else {
             homeView.setupSearchBarWarning()
             return
@@ -90,7 +90,7 @@ class HomeScreenViewController: UIViewController {
             }
         }
     }
-
+    
     @objc func avatarsListButtonGotTapped(_ sender: UIButton) {
         
         if let navigationController = self.navigationController {

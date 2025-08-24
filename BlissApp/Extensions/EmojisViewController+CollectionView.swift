@@ -19,7 +19,7 @@ extension EmojisViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func registerCells() {
         emojisView.emojisCollectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: ImageCollectionViewCell.reuseIdentifier)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let count = viewModel.tempEmojisArray.count
         
@@ -42,10 +42,10 @@ extension EmojisViewController: UICollectionViewDelegate, UICollectionViewDataSo
         
         return count
     }
-
-        
+    
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-       
+        
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.reuseIdentifier, for: indexPath) as? ImageCollectionViewCell else {
             fatalError("Could not dequeue EmojiCollectionViewCell")
         }
@@ -61,13 +61,13 @@ extension EmojisViewController: UICollectionViewDelegate, UICollectionViewDataSo
         }
         return cell
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-            viewModel.tempEmojisArray.remove(at: indexPath.item)
-
-            collectionView.deleteItems(at: [indexPath])
-        }
+        viewModel.tempEmojisArray.remove(at: indexPath.item)
+        
+        collectionView.deleteItems(at: [indexPath])
+    }
     
     func reloadDataCollectionView() {
         

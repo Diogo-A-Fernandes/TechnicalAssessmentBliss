@@ -27,7 +27,7 @@ extension RepositoriesViewController: UITableViewDelegate, UITableViewDataSource
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TextTableViewCell.reuseIdentifier, for: indexPath) as? TextTableViewCell else {
             return UITableViewCell()
         }
-
+        
         let repo = viewModel.tempReposArray[indexPath.row]
         cell.configure(text: repo.name ?? "Unnamed repo")
         
@@ -39,14 +39,14 @@ extension RepositoriesViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-           if indexPath.row == viewModel.tempReposArray.count - 1 {
-               viewModel.loadMore { [weak self] _ in
-                   DispatchQueue.main.async {
-                       self?.repositoriesView.repositoriesTableView.reloadData()
-                   }
-               }
-           }
-       }
+        if indexPath.row == viewModel.tempReposArray.count - 1 {
+            viewModel.loadMore { [weak self] _ in
+                DispatchQueue.main.async {
+                    self?.repositoriesView.repositoriesTableView.reloadData()
+                }
+            }
+        }
+    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y

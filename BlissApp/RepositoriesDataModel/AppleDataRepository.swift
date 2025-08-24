@@ -14,7 +14,7 @@ protocol AppleRepository {
 }
 
 struct AppleDataRepository: AppleRepository {
-   
+    
     private var context: NSManagedObjectContext {
         return PersistentStorage.shared.context
     }

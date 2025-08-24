@@ -15,7 +15,7 @@ protocol EmojisRepository {
 }
 
 struct EmojisDataRepository: EmojisRepository {
-        
+    
     private var context: NSManagedObjectContext {
         return PersistentStorage.shared.context
     }

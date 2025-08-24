@@ -23,7 +23,7 @@ struct AvatarsDataRepository: AvatarsRepository {
     
     func fetchDataAPIAndCreate(username: String, completionHandler: @escaping (Avatars?) -> Void) {
         APICaller.getAvatar(username: username) { result in
-
+            
             switch result {
             case .success(let data):
                 self.context.perform {
@@ -45,14 +45,14 @@ struct AvatarsDataRepository: AvatarsRepository {
                         completionHandler(nil)
                     }
                 }
-
+                
             case .failure(let error):
                 print("API failed with error: \(error.localizedDescription)")
                 completionHandler(nil)
             }
         }
     }
-
+    
     
     func getAll() -> [Avatars] {
         var results: [Avatars] = []

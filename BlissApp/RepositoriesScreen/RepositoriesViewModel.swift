@@ -12,7 +12,7 @@ class RepositoriesViewModel {
     
     private var hasMorePages = true
     var isLoading = Observable(false)
-
+    
     func getRepositoriesRecord(completionHandler: @escaping ([AppleRepos]) -> Void) {
         let savedRepos = _appleRepository.getAll()
         

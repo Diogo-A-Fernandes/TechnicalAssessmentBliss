@@ -16,10 +16,10 @@ extension UICollectionView {
         messageLabel.numberOfLines = 0
         messageLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         messageLabel.sizeToFit()
-
+        
         self.backgroundView = messageLabel
     }
-
+    
     func restore() {
         self.backgroundView = nil
     }

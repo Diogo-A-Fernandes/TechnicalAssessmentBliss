@@ -15,10 +15,10 @@ extension HomeScreenViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-        		if !searchText.isEmpty {
-               searchBar.layer.borderColor = UIColor.clear.cgColor
-               searchBar.layer.borderWidth = 0
-           }
+        if !searchText.isEmpty {
+            searchBar.layer.borderColor = UIColor.clear.cgColor
+            searchBar.layer.borderWidth = 0
+        }
         
         viewModel.lastSearchText = searchText
     }

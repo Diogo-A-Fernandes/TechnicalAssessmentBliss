@@ -10,8 +10,8 @@ import SDWebImage
 
 class EmojisViewController: UIViewController {
     
-     let viewModel : EmojisViewModel
-     let emojisView = EmojisView()
+    let viewModel : EmojisViewModel
+    let emojisView = EmojisView()
     
     init(viewModel: EmojisViewModel = EmojisViewModel()) {
         self.viewModel = viewModel
@@ -32,7 +32,7 @@ class EmojisViewController: UIViewController {
         view.backgroundColor = .systemBackground
         title = "Emojis"
         setupCollectionView()
-
+        
         viewModel.getEmojisRecord { result in
             self.reloadDataCollectionView()
         }
@@ -46,7 +46,7 @@ class EmojisViewController: UIViewController {
         viewModel.tempEmojisArray = viewModel.refreshTempArrayData()
         emojisView.emojisCollectionView.reloadData()
         emojisView.emojisCollectionView.refreshControl?.endRefreshing()
-        }
+    }
     
     private func bindLoading() {
         viewModel.isLoading.bind { [weak self] loading in
@@ -59,4 +59,4 @@ class EmojisViewController: UIViewController {
         }
     }
 }
-		
+
